@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Wallet Scanner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>₿</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="bitcoin-symbol">₿</span>
+                <h1>Bitcoin Wallet Scanner</h1>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-group">
+                <label for="workerCount">Workers:</label>
+                <select id="workerCount">
+                    <option value="1">1 Worker</option>
+                    <option value="2">2 Workers</option>
+                    <option value="4" selected>4 Workers</option>
+                    <option value="6">6 Workers</option>
+                    <option value="8">8 Workers</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <button id="startBtn" class="btn btn-start">
+                    <span class="btn-icon">▶</span>
+                    Start Scanning
+                </button>
+                <button id="stopBtn" class="btn btn-stop" disabled>
+                    <span class="btn-icon">⏸</span>
+                    Stop Scanning
+                </button>
+            </div>
+
+            <div class="control-group">
+                <button id="generateBtn" class="btn btn-secondary">
+                    <span class="btn-icon">🔑</span>
+                    Generate Wallet
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <span class="btn-icon">🗑</span>
+                    Clear Stats
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="attemptsCount">0</div>
+                    <div class="stat-label">Total Attempts</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💎</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="foundCount">0</div>
+                    <div class="stat-label">Wallets Found</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">₿</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalBtc">0.00000000</div>
+                    <div class="stat-label">Total BTC</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="scanRate">0</div>
+                    <div class="stat-label">Scans/min</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Ready to scan...</div>
+        </div>
+
+        <!-- Found Wallets -->
+        <div class="section">
+            <h2>
+                <span class="section-icon">💰</span>
+                Found Wallets
+                <span class="badge" id="foundBadge">0</span>
+            </h2>
+            <div class="found-wallets" id="foundWallets">
+                <div class="empty-state">
+                    <div class="empty-icon">🔍</div>
+                    <p>No wallets with balance found yet.</p>
+                    <p>Start scanning to find Bitcoin wallets!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Activity -->
+        <div class="section">
+            <h2>
+                <span class="section-icon">📊</span>
+                Latest Activity
+            </h2>
+            <div class="activity-log" id="activityLog">
+                <div class="activity-item">
+                    <span class="activity-time">Ready</span>
+                    <span class="activity-message">System initialized and ready to scan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Tools -->
+        <div class="section">
+            <h2>
+                <span class="section-icon">🎓</span>
+                Educational Tools
+            </h2>
+            
+            <!-- Address Validator -->
+            <div class="tool-section">
+                <h3>Bitcoin Address Validator</h3>
+                <div class="input-group">
+                    <input type="text" id="addressInput" placeholder="Enter Bitcoin address to validate..." class="address-input">
+                    <button id="validateBtn" class="btn btn-secondary">
+                        <span class="btn-icon">✓</span>
+                        Validate
+                    </button>
+                </div>
+                <div id="validationResult" class="validation-result"></div>
+            </div>
+
+            <!-- Key Analysis -->
+            <div class="tool-section">
+                <h3>Private Key Analysis</h3>
+                <div class="input-group">
+                    <input type="text" id="privateKeyInput" placeholder="Enter private key (hex format)..." class="address-input">
+                    <button id="analyzeBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🔍</span>
+                        Analyze
+                    </button>
+                </div>
+                <div id="analysisResult" class="analysis-result"></div>
+            </div>
+
+            <!-- Address Variations -->
+            <div class="tool-section">
+                <h3>Address Format Converter</h3>
+                <p class="tool-description">Generate all possible address formats from a single private key</p>
+                <button id="demonstrateBtn" class="btn btn-secondary">
+                    <span class="btn-icon">🔄</span>
+                    Generate Example
+                </button>
+                <div id="addressVariations" class="address-variations"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>⚠️ Educational purposes only. Never share private keys or use found wallets.</p>
+            <p>This tool demonstrates Bitcoin address generation and balance checking.</p>
+        </footer>
+    </div>
+
+    <!-- Generated Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generated Wallet</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="walletDetails">
+                <!-- Wallet details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

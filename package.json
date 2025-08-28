@@ -1,0 +1,21 @@
+{
+  "name": "bitcoin-wallet-scanner",
+  "version": "1.0.0",
+  "description": "Bitcoin wallet scanner system with multi-worker support",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node server.cjs",
+    "dev": "node server.cjs"
+  },
+  "keywords": ["bitcoin", "wallet", "scanner", "blockchain"],
+  "dependencies": {
+    "express": "^4.18.2",
+    "bitcoinjs-lib": "^6.1.5",
+    "@noble/secp256k1": "^2.0.0",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
